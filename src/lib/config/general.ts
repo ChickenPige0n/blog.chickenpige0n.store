@@ -55,14 +55,14 @@ export const head: HeadConfig = {}
 
 export const header: HeaderConfig = {
   nav: [
-    {
-      link: '/hello-world',
-      text: 'Get Started',
-    },
-    {
-      link: '/hello-world/elements',
-      text: 'Elements',
-    },
+    // {
+    //   link: '/hello-world',
+    //   text: 'Get Started',
+    // },
+    // {
+    //   link: '/hello-world/elements',
+    //   text: 'Elements',
+    // },
   ],
 }
 
@@ -80,7 +80,7 @@ export const footer: FooterConfig = {
 }
 
 export const date: DateConfig = {
-  locales: 'en-US',
+  locales: 'zh-CN',
   options: {
     day: 'numeric',
     month: 'short',
