@@ -55,10 +55,10 @@ export const head: HeadConfig = {}
 
 export const header: HeaderConfig = {
   nav: [
-    // {
-    //   link: '/hello-world',
-    //   text: 'Get Started',
-    // },
+    {
+      link: '/hello-world',
+      text: 'Hello World',
+    },
     // {
     //   link: '/hello-world/elements',
     //   text: 'Elements',
