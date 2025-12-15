@@ -59,10 +59,6 @@ export const header: HeaderConfig = {
       link: '/hello-world',
       text: 'Hello World',
     },
-    // {
-    //   link: '/hello-world/elements',
-    //   text: 'Elements',
-    // },
   ],
 }
 
