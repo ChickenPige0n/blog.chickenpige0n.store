@@ -16,14 +16,8 @@
 
   let { data, children }: { data: LayoutData, children: Snippet } = $props()
 
-  let path = $derived(data.path)
+  let path = $derived(data?.path ?? '')
 
-  // Set stores synchronously during initialization (matching original Svelte 4 behavior)
-  // so they are populated before child components' effects run.
-  posts.set(data.res)
-  tags.set(genTags(data.res))
-
-  // Also update reactively for subsequent navigation changes
   $effect(() => {
     posts.set(data.res)
     tags.set(genTags(data.res))
