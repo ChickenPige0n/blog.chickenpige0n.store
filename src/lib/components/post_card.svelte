@@ -17,17 +17,19 @@
   let index: number = $state(0)
   let prev: undefined | Urara.Post = $state()
   let next: undefined | Urara.Post = $state()
-  if (browser && !preview) {
-    storedPosts.subscribe((storedPosts: Urara.Post[]) => {
+  $effect(() => {
+    if (!browser || preview) return
+    const unsub = storedPosts.subscribe((storedPosts: Urara.Post[]) => {
       index = storedPosts.findIndex(storedPost => storedPost.path === post.path)
       prev = storedPosts
         .slice(0, index)
         .reverse()
-        .find(post => !post.flags?.includes('unlisted'))
-      next = storedPosts.slice(index + 1).find(post => !post.flags?.includes('unlisted'))
+        .find(p => !p.flags?.includes('unlisted'))
+      next = storedPosts.slice(index + 1).find(p => !p.flags?.includes('unlisted'))
       storedTitle.set(post.title ?? post.path.slice(1))
     })
-  }
+    return unsub
+  })
 </script>
 
 <svelte:element

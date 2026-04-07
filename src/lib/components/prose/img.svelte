@@ -34,7 +34,7 @@
     return undefined
   }
 
-  const source = resolveSource(sources[`/src/static${src}`])
+  let source = $derived(resolveSource(sources[`/src/static${src}`]))
 </script>
 
 {#if source}

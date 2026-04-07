@@ -78,12 +78,12 @@
           </button>
         {/if}
         <div class='dropdown dropdown-end' id='change-theme'>
-          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+          <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
           <!-- reference: https://github.com/saadeghi/daisyui/issues/1285 -->
           <div class='btn btn-square btn-ghost' tabindex='0'>
             <span class='i-heroicons-outline-color-swatch'></span>
           </div>
-          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+          <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
           <!-- reference: https://github.com/saadeghi/daisyui/issues/1285 -->
           <ul
             class='flex flex-nowrap shadow-2xl menu dropdown-content bg-base-100 text-base-content rounded-box w-52 p-2 gap-2 overflow-y-auto max-h-[21.5rem]'
@@ -116,7 +116,7 @@
   {:else}
     <div class='navbar' in:fly={{ delay: 300, duration: 300, x: 50 }} out:fly={{ duration: 300, x: 50 }}>
       <Search />
-      <button class='btn btn-square btn-ghost' onclick={() => (search = !search)} tabindex='0'>
+      <button aria-label='close search' class='btn btn-square btn-ghost' onclick={() => (search = !search)} tabindex='0'>
         <span class='i-heroicons-outline-x'></span>
       </button>
     </div>
@@ -136,7 +136,7 @@
   <!-- https://daisyui.com/blog/how-to-update-daisyui-4/#3-all--focus-colors-are-removed -->
   <div
     class='radial-progress text-accent transition-all duration-500 ease-in-out group-hover:text-[color-mix(in_oklab,oklch(var(--a)),black_7%)] col-start-1 row-start-1'
-    style={`--size:4rem; --thickness: 0.25rem; --value:${percent};`} />
+    style={`--size:4rem; --thickness: 0.25rem; --value:${percent};`}></div>
   <div
     class='border-4 border-base-content/10 group-hover:border-transparent col-start-1 row-start-1 rounded-full w-full h-full p-4 grid duration-500 ease-in-out'
     class:border-transparent={percent > 95}>
