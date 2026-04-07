@@ -55,7 +55,7 @@
 
 <header
   class="fixed z-50 w-full transition-all duration-500 ease-in-out border-b-2 border-transparent max-h-[4.125rem]{scrollY
-    > 32 && 'backdrop-blur !border-base-content/10 bg-base-100/30 md:bg-base-200/30'}"
+    > 32 && 'backdrop-blur !border-base-content/10 bg-base-100 md:bg-base-100'}"
   class:-translate-y-32={!pin && scrollY > 0}
   id='header'>
   {#if !search}
