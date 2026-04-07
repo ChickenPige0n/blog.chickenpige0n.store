@@ -76,6 +76,8 @@ export default {
       )}\` }`
     },
   },
+  // mdsvex 0.12+ resolves layout imports relative to the markdown file,
+  // so an absolute path is required to correctly locate the layout component.
   layout: {
     _: resolve('./src/lib/components/post_layout.svelte'),
   },
