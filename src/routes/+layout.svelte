@@ -16,15 +16,13 @@
 
   let { data, children }: { data: LayoutData, children: Snippet } = $props()
 
-  let { path, res } = data
+  let path = $derived(data.path)
 
   $effect(() => {
-    if (data)
-      path = data.path
+    posts.set(data.res)
+    tags.set(genTags(data.res))
   })
 
-  posts.set(res)
-  tags.set(genTags(res))
   onMount(
     () =>
       !dev

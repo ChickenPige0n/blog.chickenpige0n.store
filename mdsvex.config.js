@@ -2,7 +2,7 @@ import { lex, parse as parseFence } from 'fenceparser'
 import Slugger from 'github-slugger'
 import { toString } from 'mdast-util-to-string'
 import { escapeSvelte } from 'mdsvex'
-import { join, parse } from 'node:path'
+import { join, parse, resolve } from 'node:path'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeExternalLinks from 'rehype-external-links'
 import rehypeSlug from 'rehype-slug'
@@ -77,7 +77,7 @@ export default {
     },
   },
   layout: {
-    _: './src/lib/components/post_layout.svelte',
+    _: resolve('./src/lib/components/post_layout.svelte'),
   },
   rehypePlugins: [
     rehypeSlug,

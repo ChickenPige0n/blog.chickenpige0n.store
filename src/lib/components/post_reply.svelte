@@ -12,7 +12,7 @@
     href={in_reply_to}
     rel='noopener noreferrer external'
     target='_blank'>
-    <span class='i-heroicons-outline-reply my-auto !w-4 !h-4' />
+    <span class='i-heroicons-outline-reply my-auto !w-4 !h-4'></span>
     {in_reply_to}
   </a>
 </div>

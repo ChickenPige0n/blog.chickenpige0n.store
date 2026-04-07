@@ -22,12 +22,19 @@ export default defineConfig({
     imagetools(),
     sveltekit(),
     pwa({
+      devOptions: {
+        enabled: false,
+      },
       manifest: false,
       registerType: 'autoUpdate',
       scope: '/',
       workbox: {
-        globIgnores: ['**/sw*', '**/workbox-*'],
-        globPatterns: ['posts.json', '**/*.{js,css,html,svg,ico,png,webp,avif}'],
+        globPatterns: ['client/**/*.{js,css,ico,png,svg,webp,webmanifest}', 'prerendered/**/*.html'],
+        navigateFallback: '/',
+        runtimeCaching: [{
+          handler: 'NetworkFirst',
+          urlPattern: /^https?.*/,
+        }],
       },
     }),
   ],

@@ -14,9 +14,9 @@
     post: Urara.Post, preview?: boolean, loading?: 'eager' | 'lazy', decoding?: 'async' | 'auto' | 'sync', children?: Snippet
   } = $props()
   // pagination
-  let index: number
-  let prev: undefined | Urara.Post
-  let next: undefined | Urara.Post
+  let index: number = $state(0)
+  let prev: undefined | Urara.Post = $state()
+  let next: undefined | Urara.Post = $state()
   if (browser && !preview) {
     storedPosts.subscribe((storedPosts: Urara.Post[]) => {
       index = storedPosts.findIndex(storedPost => storedPost.path === post.path)
@@ -111,7 +111,7 @@
       {/if}
     </main>
     {#if !preview && post.tags}
-      <div class='divider mt-4 mb-0' />
+      <div class='divider mt-4 mb-0'></div>
       <div>
         {#each post.tags as tag}
           <a class='btn btn-sm btn-ghost normal-case mt-2 mr-2 p-category' href='/?tags={tag}'>
