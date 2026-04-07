@@ -150,7 +150,7 @@ switch (process.argv[2]) {
         .on('unlink', file => rmFile(file))
         .on('addDir', dir => mkDir(dir))
         .on('unlinkDir', dir => rmDir(dir))
-        .on('error', error => log('red', 'error', error))
+        .on('error', (error: Error) => log('red', 'error', error))
         .on('ready', () => log('cyan', 'copy complete. ready for changes'))
       process
         .on('SIGINT', () => {

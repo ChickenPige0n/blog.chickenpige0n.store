@@ -95,7 +95,7 @@
               {/each}]
             </h2>
             <button class='btn btn-secondary' onclick={() => (tags = [])}>
-              <span class='i-heroicons-outline-trash mr-2' />
+              <span class='i-heroicons-outline-trash mr-2'></span>
               tags = []
             </button>
           </div>
@@ -129,7 +129,7 @@
         class:hidden={!loaded}
         in:fly={{ delay: 500, duration: 300, x: posts.length + (1 % 2) ? 100 : -100 }}
         out:fly={{ duration: 300, x: posts.length + (1 % 2) ? -100 : 100 }}>
-        <div class='divider mt-0 mb-8 hidden lg:flex' />
+        <div class='divider mt-0 mb-8 hidden lg:flex'></div>
         <Footer />
       </div>
     {/key}

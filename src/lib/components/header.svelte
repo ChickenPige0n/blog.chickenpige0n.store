@@ -9,13 +9,14 @@
   import { fly } from 'svelte/transition'
 
   let { path }: { path: string } = $props()
-  let title: string
-  let currentTheme: string
-  let currentThemeColor: string
-  let search: boolean = false
-  let pin: boolean = true
-  let percent: number
-  let [scrollY, lastY] = [0, 0]
+  let title: string = $state('')
+  let currentTheme: string = $state('')
+  let currentThemeColor: string = $state('')
+  let search: boolean = $state(false)
+  let pin: boolean = $state(true)
+  let percent: number = $state(0)
+  let scrollY: number = $state(0)
+  let lastY: number = $state(0)
 
   storedTitle.subscribe(storedTitle => (title = storedTitle as string))
 
@@ -73,14 +74,14 @@
       <div class='navbar-end'>
         {#if headerConfig.search}
           <button aria-label='search' class='btn btn-square btn-ghost' onclick={() => (search = !search)} tabindex='0'>
-            <span class='i-heroicons-outline-search' />
+            <span class='i-heroicons-outline-search'></span>
           </button>
         {/if}
         <div class='dropdown dropdown-end' id='change-theme'>
           <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
           <!-- reference: https://github.com/saadeghi/daisyui/issues/1285 -->
           <div class='btn btn-square btn-ghost' tabindex='0'>
-            <span class='i-heroicons-outline-color-swatch' />
+            <span class='i-heroicons-outline-color-swatch'></span>
           </div>
           <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
           <!-- reference: https://github.com/saadeghi/daisyui/issues/1285 -->
@@ -103,7 +104,7 @@
                 </p>
                 <div class='grid grid-cols-4 gap-0.5 m-auto'>
                   {#each ['bg-primary', 'bg-secondary', 'bg-accent', 'bg-neutral'] as bg}
-                    <div class={`${bg} w-1 h-4 rounded-btn`} />
+                    <div class={`${bg} w-1 h-4 rounded-btn`}></div>
                   {/each}
                 </div>
               </button>
@@ -116,7 +117,7 @@
     <div class='navbar' in:fly={{ delay: 300, duration: 300, x: 50 }} out:fly={{ duration: 300, x: 50 }}>
       <Search />
       <button class='btn btn-square btn-ghost' onclick={() => (search = !search)} tabindex='0'>
-        <span class='i-heroicons-outline-x' />
+        <span class='i-heroicons-outline-x'></span>
       </button>
     </div>
   {/if}
@@ -139,6 +140,6 @@
   <div
     class='border-4 border-base-content/10 group-hover:border-transparent col-start-1 row-start-1 rounded-full w-full h-full p-4 grid duration-500 ease-in-out'
     class:border-transparent={percent > 95}>
-    <span class='i-heroicons-solid-chevron-up !w-6 !h-6' />
+    <span class='i-heroicons-solid-chevron-up !w-6 !h-6'></span>
   </div>
 </button>

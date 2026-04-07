@@ -33,13 +33,11 @@
     'wm-target': string
   }
 
-  let [page, loaded, end, mentions, sortDirUp]: [number, boolean, boolean, WebmentionEntry[], boolean] = [
-    0,
-    false,
-    false,
-    [],
-    config?.sortDir === 'up',
-  ]
+  let page: number = $state(0)
+  let loaded: boolean = $state(false)
+  let end: boolean = $state(false)
+  let mentions: WebmentionEntry[] = $state([])
+  let sortDirUp: boolean = $state(config?.sortDir === 'up')
 
   const load = async () =>
     await fetch(
@@ -88,9 +86,9 @@
         reset()
       }}>
       {#if sortDirUp === true}
-        <span class='i-heroicons-outline-sort-ascending' />
+        <span class='i-heroicons-outline-sort-ascending'></span>
       {:else}
-        <span class='i-heroicons-outline-sort-descending' />
+        <span class='i-heroicons-outline-sort-descending'></span>
       {/if}
     </button>
   </div>
@@ -172,7 +170,7 @@
       <div class='divider mt-0 -mb-2'>END</div>
     {/if}
   {:else}
-    <button class='btn btn-lg btn-block flex btn-ghost loading' id='webmention-loading' />
+    <button aria-label='loading' class='btn btn-lg btn-block flex btn-ghost loading' id='webmention-loading'></button>
   {/if}
   {#if config?.form === true}
     <form action='https://webmention.io/{config.username}/webmention' id='webmention-form' method='post'>

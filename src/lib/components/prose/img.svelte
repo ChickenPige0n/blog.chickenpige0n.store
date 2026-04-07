@@ -7,7 +7,7 @@
     w: number
   }
 
-  const sources = import.meta.glob<Image[]>(['/src/static/**/*.{jpg,jpeg,png,webp,avif}', '!/src/static/assets'], {
+  const sources = import.meta.glob<Image[] | Image | string>(['/src/static/**/*.{jpg,jpeg,png,webp,avif}', '!/src/static/assets'], {
     eager: true,
     import: 'default',
     query: {
@@ -25,7 +25,16 @@
     loading?: 'eager' | 'lazy'
     decoding?: 'async' | 'auto' | 'sync'
   } = $props()
-  const source: Image[] | undefined = sources[`/src/static${src}`]
+
+  function resolveSource(raw: Image[] | Image | string | undefined): Image[] | undefined {
+    if (!raw) return undefined
+    if (typeof raw === 'string') return undefined // URL string, skip optimized version
+    if (Array.isArray(raw)) return raw.length > 0 ? raw : undefined
+    if (typeof raw === 'object' && 'src' in raw) return [raw]
+    return undefined
+  }
+
+  const source = resolveSource(sources[`/src/static${src}`])
 </script>
 
 {#if source}
