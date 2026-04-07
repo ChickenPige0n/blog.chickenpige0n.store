@@ -1,7 +1,8 @@
 <script lang='ts'>
-  let className = ''
-  export { className as class }
-  export let in_reply_to: Urara.Post['in_reply_to']
+  let { class: className = '', in_reply_to }: {
+    class?: string
+    in_reply_to: Urara.Post['in_reply_to']
+  } = $props()
 </script>
 
 <div class='flex flex-wrap gap-2 rounded-box outline outline-neutral/10 p-4{className}'>

@@ -2,10 +2,11 @@
   import { footer as footerConfig } from '$lib/config/general'
   import { site } from '$lib/config/site'
 
-  let className: string | undefined
-  export { className as class }
-  export let sticky: boolean = false
-  export let rounded: boolean = false
+  let { class: className, sticky = false, rounded = false }: {
+    class?: string
+    sticky?: boolean
+    rounded?: boolean
+  } = $props()
 </script>
 
 <footer

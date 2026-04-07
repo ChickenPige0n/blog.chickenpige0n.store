@@ -4,7 +4,7 @@
   import { site } from '$lib/config/site'
   import { onMount } from 'svelte'
 
-  export let config: GiscusConfig
+  let { config }: { config: GiscusConfig } = $props()
 
   onMount(() => {
     const giscus = document.createElement('script')

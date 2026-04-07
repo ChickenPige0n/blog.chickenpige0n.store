@@ -1,9 +1,11 @@
 <script lang='ts'>
-  export let nav: { children?: { link: string, text: string }[], link?: string, text: string }[]
-  export let path: string
-  export let title: string
-  export let scrollY: number
-  export let pin: boolean
+  let { nav, path, title, scrollY, pin }: {
+    nav: { children?: { link: string, text: string }[], link?: string, text: string }[]
+    path: string
+    title: string
+    scrollY: number
+    pin: boolean
+  } = $props()
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -44,7 +46,7 @@
   <button
     class='swap-on btn btn-ghost text-base font-normal normal-case transition-all duration-200'
     class:hidden={scrollY < 32 || !title}
-    on:click={() => window.scrollTo(0, 0)}>
+    onclick={() => window.scrollTo(0, 0)}>
     {title}
   </button>
   <ul class='swap-off menu menu-horizontal p-0' class:hidden={scrollY > 64 && title}>

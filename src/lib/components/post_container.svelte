@@ -1,4 +1,5 @@
 <script lang='ts'>
+  import type { Snippet } from 'svelte'
   import { browser } from '$app/environment'
   import Footer from '$lib/components/footer.svelte'
   import Head from '$lib/components/head.svelte'
@@ -7,7 +8,7 @@
   import Toc from '$lib/components/post_toc.svelte'
   import { fly } from 'svelte/transition'
 
-  export let post: Urara.Post
+  let { post, children }: { post: Urara.Post, children: Snippet } = $props()
 </script>
 
 <Head {post} />
@@ -33,7 +34,7 @@
   </div>
   <div class='flex-none w-full max-w-screen-md mx-auto xl:mx-0'>
     <Card {post}>
-      <slot />
+      {@render children?.()}
     </Card>
     <Footer sticky={true} />
   </div>

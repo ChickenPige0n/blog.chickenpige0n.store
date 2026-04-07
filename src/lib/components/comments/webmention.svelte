@@ -4,8 +4,7 @@
   import { site } from '$lib/config/site'
   import { onMount } from 'svelte'
 
-  export let config: WebmentionConfig
-  export let post: Urara.Post
+  let { config, post }: { config: WebmentionConfig, post: Urara.Post } = $props()
 
   interface WebmentionFeed {
     children: WebmentionEntry[]
@@ -84,7 +83,7 @@
     </p>
     <button
       class='btn btn-ghost btn-sm float-right'
-      on:click={() => {
+      onclick={() => {
         sortDirUp = !sortDirUp
         reset()
       }}>
@@ -163,7 +162,7 @@
     {#if end !== true}
       <button
         class='btn btn-primary btn-block'
-        on:click={() => {
+        onclick={() => {
           loaded = false
           load()
         }}>
