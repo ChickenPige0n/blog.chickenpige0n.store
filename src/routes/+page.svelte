@@ -37,7 +37,7 @@
 
   // Handle URL changes when tags change (client-side only)
   $effect(() => {
-    if (tags && browser && window.location.pathname === '/')
+    if (browser && window.location.pathname === '/')
       goto(tags.length > 0 ? `?tags=${tags.toString()}` : `/`, { replaceState: true })
   })
 
