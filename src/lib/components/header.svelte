@@ -8,7 +8,7 @@
   import { hslToHex } from '$lib/utils/color'
   import { fly } from 'svelte/transition'
 
-  export let path: string
+  let { path }: { path: string } = $props()
   let title: string
   let currentTheme: string
   let currentThemeColor: string
@@ -19,26 +19,30 @@
 
   storedTitle.subscribe(storedTitle => (title = storedTitle as string))
 
-  $: if (browser && currentTheme) {
-    document.documentElement.setAttribute('data-theme', currentTheme)
-    currentThemeColor = hslToHex(
-      ...(getComputedStyle(document.documentElement)
-        .getPropertyValue('--b1')
-        .slice(dev ? 1 : 0)
-        .replaceAll('%', '')
-        .split(' ')
-        .map(Number) as [number, number, number]),
-    )
-  }
-
-  $: if (scrollY) {
-    pin = !!(lastY - scrollY > 0 || scrollY === 0)
-    lastY = scrollY
-    if (browser) {
-      percent
-        = Math.round((scrollY / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 10000) / 100
+  $effect(() => {
+    if (browser && currentTheme) {
+      document.documentElement.setAttribute('data-theme', currentTheme)
+      currentThemeColor = hslToHex(
+        ...(getComputedStyle(document.documentElement)
+          .getPropertyValue('--b1')
+          .slice(dev ? 1 : 0)
+          .replaceAll('%', '')
+          .split(' ')
+          .map(Number) as [number, number, number]),
+      )
     }
-  }
+  })
+
+  $effect(() => {
+    if (scrollY) {
+      pin = !!(lastY - scrollY > 0 || scrollY === 0)
+      lastY = scrollY
+      if (browser) {
+        percent
+          = Math.round((scrollY / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 10000) / 100
+      }
+    }
+  })
 
   if (browser) {
     currentTheme
@@ -68,7 +72,7 @@
       </div>
       <div class='navbar-end'>
         {#if headerConfig.search}
-          <button aria-label='search' class='btn btn-square btn-ghost' on:click={() => (search = !search)} tabindex='0'>
+          <button aria-label='search' class='btn btn-square btn-ghost' onclick={() => (search = !search)} tabindex='0'>
             <span class='i-heroicons-outline-search' />
           </button>
         {/if}
@@ -90,7 +94,7 @@
                 class:border-2={currentTheme === name}
                 class:border-primary={currentTheme === name}
                 data-theme={name}
-                on:click={() => {
+                onclick={() => {
                   currentTheme = name
                   localStorage.setItem('theme', name)
                 }}>
@@ -111,7 +115,7 @@
   {:else}
     <div class='navbar' in:fly={{ delay: 300, duration: 300, x: 50 }} out:fly={{ duration: 300, x: 50 }}>
       <Search />
-      <button class='btn btn-square btn-ghost' on:click={() => (search = !search)} tabindex='0'>
+      <button class='btn btn-square btn-ghost' onclick={() => (search = !search)} tabindex='0'>
         <span class='i-heroicons-outline-x' />
       </button>
     </div>
@@ -127,7 +131,7 @@
   class:opacity-100={scrollY}
   class:translate-y-24={!pin || scrollY === 0}
   id='totop'
-  on:click={() => window.scrollTo(0, 0)}>
+  onclick={() => window.scrollTo(0, 0)}>
   <!-- https://daisyui.com/blog/how-to-update-daisyui-4/#3-all--focus-colors-are-removed -->
   <div
     class='radial-progress text-accent transition-all duration-500 ease-in-out group-hover:text-[color-mix(in_oklab,oklch(var(--a)),black_7%)] col-start-1 row-start-1'

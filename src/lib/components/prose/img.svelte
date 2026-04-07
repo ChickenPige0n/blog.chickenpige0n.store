@@ -18,12 +18,13 @@
     },
   })
 
-  let className: string | undefined
-  export { className as class }
-  export let src: string
-  export let alt: string = src
-  export let loading: 'eager' | 'lazy' = 'lazy'
-  export let decoding: 'async' | 'auto' | 'sync' = 'async'
+  let { class: className, src, alt = src, loading = 'lazy', decoding = 'async' }: {
+    class?: string
+    src: string
+    alt?: string
+    loading?: 'eager' | 'lazy'
+    decoding?: 'async' | 'auto' | 'sync'
+  } = $props()
   const source: Image[] | undefined = sources[`/src/static${src}`]
 </script>
 

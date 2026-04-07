@@ -3,7 +3,7 @@
 
   import { onMount } from 'svelte'
 
-  export let config: UtterancesConfig
+  let { config }: { config: UtterancesConfig } = $props()
 
   onMount(() => {
     const utterances = document.createElement('script')

@@ -3,8 +3,7 @@
 
   import { onDestroy, onMount } from 'svelte'
 
-  export let post: Urara.Post
-  export let config: Remark42Config
+  let { post, config }: { post: Urara.Post, config: Remark42Config } = $props()
 
   let remark42Instance: any
 

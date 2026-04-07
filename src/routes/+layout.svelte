@@ -1,4 +1,5 @@
 <script lang='ts'>
+  import type { Snippet } from 'svelte'
   import { browser, dev } from '$app/environment'
   import Head from '$lib/components/head_static.svelte'
   import Header from '$lib/components/header.svelte'
@@ -13,12 +14,14 @@
 
   import '../app.pcss'
 
-  export let data: LayoutData
+  let { data, children }: { data: LayoutData, children: Snippet } = $props()
 
   let { path, res } = data
 
-  $: if (data)
-    path = data.path
+  $effect(() => {
+    if (data)
+      path = data.path
+  })
 
   posts.set(res)
   tags.set(genTags(res))
@@ -39,5 +42,5 @@
 <Header {path} />
 
 <Transition {path}>
-  <slot />
+  {@render children?.()}
 </Transition>

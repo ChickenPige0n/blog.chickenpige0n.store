@@ -2,8 +2,10 @@
   import { date } from '$lib/config/general'
   import { site } from '$lib/config/site'
 
-  export let post: Urara.Post
-  export let preview: boolean = false
+  let { post, preview = false }: {
+    post: Urara.Post
+    preview?: boolean
+  } = $props()
   const stringPublished = new Date(post.published ?? post.created).toLocaleString(date.locales, date.options)
   const stringUpdated = new Date(post.updated ?? post.published ?? post.created).toLocaleString(date.locales, date.options)
   const jsonPublished = new Date(post.published ?? post.created).toJSON()

@@ -1,4 +1,4 @@
-<script context='module' lang='ts'>
+<script module lang='ts'>
   import Image from '$lib/components/prose/img.svelte'
   import table from '$lib/components/prose/table.svelte'
 
@@ -6,28 +6,19 @@
 </script>
 
 <script lang='ts'>
+  import type { Snippet } from 'svelte'
   import Container from '$lib/components/post_container.svelte'
   import { typeOfPost } from '$lib/utils/posts'
-  // auto-generated
-  export let path
-  export let slug
-  export let toc
-  // common
-  export let created
-  export let updated
-  export let published
-  export let summary
-  export let tags
-  export let flags
-  // specify
-  export let title
-  export let image
-  export let in_reply_to
+  // auto-generated & common & specify
+  let { path, slug, toc, created, updated, published, summary, tags, flags, title, image, in_reply_to, children }: {
+    path: any, slug: any, toc: any, created: any, updated: any, published: any, summary: any, tags: any, flags: any,
+    title: any, image: any, in_reply_to: any, children: Snippet
+  } = $props()
   // post
   const fm = { created, flags, image, in_reply_to, path, published, slug, summary, tags, title, toc, updated }
   const post = { type: typeOfPost(fm), ...fm }
 </script>
 
 <Container {post}>
-  <slot />
+  {@render children?.()}
 </Container>

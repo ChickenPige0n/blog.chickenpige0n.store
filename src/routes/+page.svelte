@@ -11,25 +11,36 @@
   import { onMount } from 'svelte'
   import { fly } from 'svelte/transition'
 
-  let allPosts: Urara.Post[]
-  let allTags: string[]
-  let loaded: boolean
-  let [posts, tags, years]: [Urara.Post[], string[], number[]] = [[], [], []]
+  let allPosts: Urara.Post[] = $state([])
+  let allTags: string[] = $state([])
+  let loaded: boolean = $state(false)
+  let posts: Urara.Post[] = $state([])
+  let tags: string[] = $state([])
+  let years: number[] = $state([])
 
   storedTitle.set('')
 
-  $: storedPosts.subscribe(storedPosts => (allPosts = storedPosts.filter(post => !post.flags?.includes('unlisted'))))
+  $effect(() => {
+    const unsubPosts = storedPosts.subscribe(storedPosts => (allPosts = storedPosts.filter(post => !post.flags?.includes('unlisted'))))
+    const unsubTags = storedTags.subscribe(storedTags => (allTags = storedTags as string[]))
+    return () => {
+      unsubPosts()
+      unsubTags()
+    }
+  })
 
-  $: storedTags.subscribe(storedTags => (allTags = storedTags as string[]))
+  $effect(() => {
+    if (posts.length > 1)
+      years = [new Date(posts[0].published ?? posts[0].created).getFullYear()]
+  })
 
-  $: if (posts.length > 1)
-    years = [new Date(posts[0].published ?? posts[0].created).getFullYear()]
-
-  $: if (tags) {
-    posts = !tags ? allPosts : allPosts.filter(post => tags.every(tag => post.tags?.includes(tag)))
-    if (browser && window.location.pathname === '/')
-      goto(tags.length > 0 ? `?tags=${tags.toString()}` : `/`, { replaceState: true })
-  }
+  $effect(() => {
+    if (tags) {
+      posts = !tags ? allPosts : allPosts.filter(post => tags.every(tag => post.tags?.includes(tag)))
+      if (browser && window.location.pathname === '/')
+        goto(tags.length > 0 ? `?tags=${tags.toString()}` : `/`, { replaceState: true })
+    }
+  })
 
   onMount(() => {
     if (browser) {
@@ -62,7 +73,7 @@
             class:!btn-secondary={tags.includes(tag)}
             class:shadow-lg={tags.includes(tag)}
             id={tag}
-            on:click={() => (tags.includes(tag) ? (tags = tags.filter(tagName => tagName != tag)) : (tags = [...tags, tag]))}>
+            onclick={() => (tags.includes(tag) ? (tags = tags.filter(tagName => tagName != tag)) : (tags = [...tags, tag]))}>
             #{tag}
           </button>
         {/each}
@@ -83,7 +94,7 @@
                 '{tag}'{#if i + 1 < tags.length},{/if}
               {/each}]
             </h2>
-            <button class='btn btn-secondary' on:click={() => (tags = [])}>
+            <button class='btn btn-secondary' onclick={() => (tags = [])}>
               <span class='i-heroicons-outline-trash mr-2' />
               tags = []
             </button>

@@ -1,7 +1,12 @@
 <script lang='ts'>
-  export let title: string | undefined
-  export let description: string | undefined
-  export let status: 'error' | 'info' | 'success' | 'warning' | undefined
+  import type { Snippet } from 'svelte'
+
+  let { title, description, status, children }: {
+    title?: string
+    description?: string
+    status?: 'error' | 'info' | 'success' | 'warning'
+    children?: Snippet
+  } = $props()
 </script>
 
 <div
@@ -27,9 +32,9 @@
       {/if}
     </div>
   </div>
-  {#if $$slots.default}
+  {#if children}
     <div class='block w-full'>
-      <slot />
+      {@render children?.()}
     </div>
   {/if}
 </div>

@@ -1,8 +1,10 @@
 <script lang='ts'>
   import Image from '$lib/components/prose/img.svelte'
 
-  export let prev: undefined | Urara.Post
-  export let next: undefined | Urara.Post
+  let { prev, next }: {
+    prev?: Urara.Post
+    next?: Urara.Post
+  } = $props()
 </script>
 
 <nav class='flex flex-col md:flex-row flex-warp justify-evenly'>

@@ -1,15 +1,15 @@
-<script context='module' lang='ts'>
+<script module lang='ts'>
   export const prerender = true
 </script>
 
 <script lang='ts'>
   import { onDestroy, onMount } from 'svelte'
 
-  export let toc: Urara.Post.Toc[]
+  let { toc }: { toc: Urara.Post.Toc[] } = $props()
 
-  let intersecting: string[] = []
-  let intersectingArticle: boolean = true
-  let bordered: string[] = []
+  let intersecting: string[] = $state([])
+  let intersectingArticle: boolean = $state(true)
+  let bordered: string[] = $state([])
 
   onMount(() => {
     if (window.screen.availWidth >= 1280) {
@@ -39,17 +39,23 @@
       articleObserver.disconnect()
   })
 
-  $: if (intersecting.length > 0)
-    bordered = intersecting
-  $: if (intersectingArticle === false)
-    bordered = []
-  $: if (bordered) {
-    toc.forEach(heading =>
-      bordered.includes(heading.slug!)
-        ? document.getElementById(`toc-link-${heading.slug}`)?.classList.add('!border-accent')
-        : document.getElementById(`toc-link-${heading.slug}`)?.classList.remove('!border-accent'),
-    )
-  }
+  $effect(() => {
+    if (intersecting.length > 0)
+      bordered = intersecting
+  })
+  $effect(() => {
+    if (intersectingArticle === false)
+      bordered = []
+  })
+  $effect(() => {
+    if (bordered) {
+      toc.forEach(heading =>
+        bordered.includes(heading.slug!)
+          ? document.getElementById(`toc-link-${heading.slug}`)?.classList.add('!border-accent')
+          : document.getElementById(`toc-link-${heading.slug}`)?.classList.remove('!border-accent'),
+      )
+    }
+  })
 </script>
 
 <aside class='sticky top-16 py-8'>
@@ -74,7 +80,7 @@
             class:pl-20={depth === 6}
             dir='ltr'
             id={`toc-link-${slug}`}
-            on:click={() =>
+            onclick={() =>
               // @ts-ignore Object is possibly 'null'. ts(2531)
               document.getElementById(slug).scrollIntoView({ behavior: 'smooth' })}>
             {title}

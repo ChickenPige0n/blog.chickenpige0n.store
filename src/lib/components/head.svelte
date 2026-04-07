@@ -4,8 +4,10 @@
   import { head } from '$lib/config/general'
   import { site } from '$lib/config/site'
 
-  export let post: undefined | Urara.Post
-  export let page: undefined | Urara.Page
+  let { post, page }: {
+    post?: Urara.Post
+    page?: Urara.Page
+  } = $props()
 </script>
 
 <svelte:head>

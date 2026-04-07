@@ -3,15 +3,15 @@
 
   import { toSnake } from '$lib/utils/case'
 
-  export let post: Urara.Post
-  export let config: CommentConfig
+  let { post, config }: { post: Urara.Post, config: CommentConfig } = $props()
   const comments = import.meta.glob<any>('/src/lib/components/comments/*.svelte', { eager: true, import: 'default' })
-  let currentComment: string | undefined
-  let currentConfig: undefined | unknown
-  currentComment = localStorage.getItem('comment') ?? toSnake(config.use[0])
-  // @ts-ignore No index signature with a parameter of type 'string' was found on type 'CommentConfig'. ts(7053)
-  $: if (currentComment)
-    currentConfig = config[currentComment]
+  let currentComment: string | undefined = $state(localStorage.getItem('comment') ?? toSnake(config.use[0]))
+  let currentConfig: undefined | unknown = $state()
+  $effect(() => {
+    if (currentComment)
+      // @ts-ignore No index signature with a parameter of type 'string' was found on type 'CommentConfig'. ts(7053)
+      currentConfig = config[currentComment]
+  })
 </script>
 
 {#if config?.use.length > 0}
@@ -28,7 +28,7 @@
           <span
             class='flex-1 tab transition-all'
             class:tab-active={currentComment === toSnake(name)}
-            on:click={() => {
+            onclick={() => {
               currentComment = toSnake(name)
               localStorage.setItem('comment', toSnake(name))
             }}>
@@ -39,10 +39,8 @@
     {/if}
     {#if currentComment}
       {#key currentComment}
-        <svelte:component
-          config={currentConfig}
-          {post}
-          this={comments[`/src/lib/components/comments/${currentComment}.svelte`]} />
+        {@const CommentComponent = comments[`/src/lib/components/comments/${currentComment}.svelte`]}
+        <CommentComponent config={currentConfig} {post} />
       {/key}
     {/if}
   </div>

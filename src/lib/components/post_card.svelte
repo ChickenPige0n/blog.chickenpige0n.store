@@ -1,4 +1,5 @@
 <script lang='ts'>
+  import type { Snippet } from 'svelte'
   import { browser } from '$app/environment'
   import Comment from '$lib/components/post_comment.svelte'
   import Pagination from '$lib/components/post_pagination.svelte'
@@ -9,10 +10,9 @@
   import { posts as storedPosts } from '$lib/stores/posts'
   import { title as storedTitle } from '$lib/stores/title'
 
-  export let post: Urara.Post
-  export let preview: boolean = false
-  export let loading: 'eager' | 'lazy' = 'lazy'
-  export let decoding: 'async' | 'auto' | 'sync' = 'async'
+  let { post, preview = false, loading = 'lazy', decoding = 'async', children }: {
+    post: Urara.Post, preview?: boolean, loading?: 'eager' | 'lazy', decoding?: 'async' | 'auto' | 'sync', children?: Snippet
+  } = $props()
   // pagination
   let index: number
   let prev: undefined | Urara.Post
@@ -105,7 +105,7 @@
     </div>
     <main class='urara-prose prose e-content' class:mt-4={post.type !== 'article'} itemprop='articleBody'>
       {#if !preview}
-        <slot />
+        {@render children?.()}
       {:else if post.html}
         {@html post.html}
       {/if}
