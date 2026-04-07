@@ -15,7 +15,6 @@
   let allTags: string[] = $state([])
   let loaded: boolean = $state(false)
   let tags: string[] = $state([])
-  let years: number[] = $state([])
 
   storedTitle.set('')
 
@@ -30,10 +29,13 @@
   // Derive posts from allPosts and tags (using $derived so it works during SSR, unlike $effect)
   let posts: Urara.Post[] = $derived(tags.length === 0 ? allPosts : allPosts.filter(post => tags.every(tag => post.tags?.includes(tag))))
 
-  $effect(() => {
-    if (posts.length > 1)
-      years = [new Date(posts[0].published ?? posts[0].created).getFullYear()]
-  })
+  let yearFirstIndex = $derived(
+    posts.reduce<Map<number, number>>((map, post, i) => {
+      const year = new Date(post.published ?? post.created).getFullYear()
+      if (!map.has(year)) map.set(year, i)
+      return map
+    }, new Map()),
+  )
 
   // Handle URL changes when tags change (client-side only)
   $effect(() => {
@@ -107,12 +109,12 @@
         itemtype='https://schema.org/Blog'>
         {#each posts as post, index}
           {@const year = new Date(post.published ?? post.created).getFullYear()}
-          {#if !years.includes(year)}
+          {#if yearFirstIndex.get(year) === index}
             <div
               class='divider my-4 md:my-0'
               in:fly={{ delay: 500, duration: 300, x: index % 2 ? 100 : -100 }}
               out:fly={{ duration: 300, x: index % 2 ? -100 : 100 }}>
-              {years.push(year) && year}
+              {year}
             </div>
           {/if}
           <div
