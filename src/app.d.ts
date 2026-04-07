@@ -77,15 +77,7 @@ declare global {
         title?: string
       }
       interface Module {
-        default: {
-          render: () => {
-            css: {
-              code: string
-            }
-            head: string
-            html: string
-          }
-        }
+        default: import('svelte').Component
         metadata: Frontmatter
       }
     }
