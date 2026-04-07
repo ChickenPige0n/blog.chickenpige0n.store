@@ -36,7 +36,7 @@
 
   $effect(() => {
     if (tags) {
-      posts = !tags ? allPosts : allPosts.filter(post => tags.every(tag => post.tags?.includes(tag)))
+      posts = tags.length === 0 ? allPosts : allPosts.filter(post => tags.every(tag => post.tags?.includes(tag)))
       if (browser && window.location.pathname === '/')
         goto(tags.length > 0 ? `?tags=${tags.toString()}` : `/`, { replaceState: true })
     }
@@ -83,7 +83,7 @@
   <div class='flex-none w-full max-w-screen-md mx-auto xl:mx-0'>
     {#key posts}
       <!-- {:else} is not used because there is a problem with the transition -->
-      {#if loaded && posts.length === 0}
+      {#if loaded && posts.length === 0 && tags.length > 0}
         <div
           class='bg-base-300 text-base-content shadow-inner text-center md:rounded-box p-10 -mb-2 md:mb-0 relative z-10'
           in:fly={{ delay: 500, duration: 300, x: 100 }}

@@ -6,10 +6,10 @@
     post: Urara.Post
     preview?: boolean
   } = $props()
-  const stringPublished = new Date(post.published ?? post.created).toLocaleString(date.locales, date.options)
-  const stringUpdated = new Date(post.updated ?? post.published ?? post.created).toLocaleString(date.locales, date.options)
-  const jsonPublished = new Date(post.published ?? post.created).toJSON()
-  const jsonUpdated = new Date(post.updated ?? post.published ?? post.created).toJSON()
+  let stringPublished = $derived(new Date(post.published ?? post.created).toLocaleString(date.locales, date.options))
+  let stringUpdated = $derived(new Date(post.updated ?? post.published ?? post.created).toLocaleString(date.locales, date.options))
+  let jsonPublished = $derived(new Date(post.published ?? post.created).toJSON())
+  let jsonUpdated = $derived(new Date(post.updated ?? post.published ?? post.created).toJSON())
 </script>
 
 <div class='flex font-semibold gap-1.5' class:md:mb-4={!preview && post.type !== 'article'}>

@@ -8,12 +8,13 @@
   } = $props()
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <!-- reference: https://github.com/saadeghi/daisyui/issues/1285 -->
 <div class='dropdown lg:hidden'>
   <label class='btn btn-square btn-ghost' for='navbar-dropdown' tabindex='0'>
     <span class='i-heroicons-outline-menu-alt-1'></span>
   </label>
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <ul
     class='menu menu-compact dropdown-content bg-base-100 text-base-content shadow-lg rounded-box min-w-max max-w-52 p-2'
     class:hidden={!pin}
@@ -25,6 +26,7 @@
           <a class:font-bold={link === path} href={link}>{text}</a>
         </li>
       {:else if children}
+        <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
         <li tabindex='0'>
           <span class='justify-between gap-1 max-w-[13rem]' class:font-bold={children.some(({ link }) => link === path)}>
             {text}
@@ -61,7 +63,7 @@
             {text}
             <span class='i-heroicons-solid-chevron-down -mr-1'></span>
           </span>
-          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+          <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
           <ul class='menu rounded-box bg-base-100 text-base-content shadow-lg p-2' tabindex='0'>
             {#each children as { link, text }}
               <li>

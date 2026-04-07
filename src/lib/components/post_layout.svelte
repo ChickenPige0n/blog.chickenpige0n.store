@@ -26,8 +26,8 @@
     children: Snippet
   } = $props()
   // post
-  const fm = { created, flags, image, in_reply_to, path, published, slug, summary, tags, title, toc, updated }
-  const post = { type: typeOfPost(fm), ...fm }
+  let fm = $derived({ created, flags, image, in_reply_to, path, published, slug, summary, tags, title, toc, updated })
+  let post = $derived({ type: typeOfPost(fm), ...fm })
 </script>
 
 <Container {post}>

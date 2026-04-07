@@ -37,7 +37,7 @@
   let loaded: boolean = $state(false)
   let end: boolean = $state(false)
   let mentions: WebmentionEntry[] = $state([])
-  let sortDirUp: boolean = $state(config?.sortDir === 'up')
+  let sortDirUp: boolean = $state(false)
 
   const load = async () =>
     await fetch(
@@ -71,7 +71,10 @@
     await load()
   }
 
-  onMount(() => load())
+  onMount(() => {
+    sortDirUp = config?.sortDir === 'up'
+    load()
+  })
 </script>
 
 <div class='flex flex-col gap-8'>

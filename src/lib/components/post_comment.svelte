@@ -5,9 +5,12 @@
 
   let { post, config }: { post: Urara.Post, config: CommentConfig } = $props()
   const comments = import.meta.glob<any>('/src/lib/components/comments/*.svelte', { eager: true, import: 'default' })
-  let currentComment: string | undefined = $state(localStorage.getItem('comment') ?? toSnake(config.use[0]))
+  let currentComment: string | undefined = $state(localStorage.getItem('comment') ?? undefined)
   let currentConfig: undefined | unknown = $state()
   $effect(() => {
+    if (!currentComment) {
+      currentComment = toSnake(config.use[0])
+    }
     if (currentComment)
       // @ts-ignore No index signature with a parameter of type 'string' was found on type 'CommentConfig'. ts(7053)
       currentConfig = config[currentComment]
@@ -23,9 +26,8 @@
         class:tab-lifted={config?.style === 'lifted'}
         class:tabs-boxed={config?.style === 'boxed'}>
         {#each config.use as name}
-          <!-- svelte-ignore a11y-click-events-have-key-events -->
-          <!-- svelte-ignore a11y-no-static-element-interactions -->
-          <span
+          <button
+            type='button'
             class='flex-1 tab transition-all'
             class:tab-active={currentComment === toSnake(name)}
             onclick={() => {
@@ -33,7 +35,7 @@
               localStorage.setItem('comment', toSnake(name))
             }}>
             {name}
-          </span>
+          </button>
         {/each}
       </div>
     {/if}

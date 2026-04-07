@@ -67,9 +67,9 @@
     <ul dir='ltr' id='toc-list-root'>
       {#each toc as { depth, slug, title }}
         <li class='flex flex-col' id={`toc-item-${slug}`}>
-          <!-- svelte-ignore a11y-click-events-have-key-events -->
-          <span
-            class="cursor-pointer border-l-4 border-transparent transition-all hover:border-primary hover:bg-base-content hover:bg-opacity-10 active:bg-primary active:text-primary-content active:font-bold pr-4{depth
+          <a
+            href={`#${slug}`}
+            class="block cursor-pointer border-l-4 border-transparent transition-all hover:border-primary hover:bg-base-content hover:bg-opacity-10 active:bg-primary active:text-primary-content active:font-bold pr-4{depth
             <= 2
               ? 'py-3'
               : 'py-2'}"
@@ -80,11 +80,13 @@
             class:pl-20={depth === 6}
             dir='ltr'
             id={`toc-link-${slug}`}
-            onclick={() =>
+            onclick={(e) => {
+              e.preventDefault()
               // @ts-ignore Object is possibly 'null'. ts(2531)
-              document.getElementById(slug).scrollIntoView({ behavior: 'smooth' })}>
+              document.getElementById(slug).scrollIntoView({ behavior: 'smooth' })
+            }}>
             {title}
-          </span>
+          </a>
         </li>
       {/each}
     </ul>
