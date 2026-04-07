@@ -5,11 +5,12 @@
 
   let { post, config }: { post: Urara.Post, config: CommentConfig } = $props()
   const comments = import.meta.glob<any>('/src/lib/components/comments/*.svelte', { eager: true, import: 'default' })
-  let currentComment: string | undefined = $state(localStorage.getItem('comment') ?? undefined)
+  let currentComment: string | undefined = $state(undefined)
   let currentConfig: undefined | unknown = $state()
   $effect(() => {
     if (!currentComment) {
-      currentComment = toSnake(config.use[0])
+      const stored = typeof localStorage !== 'undefined' ? localStorage.getItem('comment') : null
+      currentComment = stored ?? toSnake(config.use[0])
     }
     if (currentComment)
       // @ts-ignore No index signature with a parameter of type 'string' was found on type 'CommentConfig'. ts(7053)
