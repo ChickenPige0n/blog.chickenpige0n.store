@@ -8,38 +8,37 @@
   import Post from '$lib/components/post_card.svelte'
   import { posts as storedPosts, tags as storedTags } from '$lib/stores/posts'
   import { title as storedTitle } from '$lib/stores/title'
-  import { onMount } from 'svelte'
+  import { onDestroy, onMount } from 'svelte'
   import { fly } from 'svelte/transition'
 
   let allPosts: Urara.Post[] = $state([])
   let allTags: string[] = $state([])
   let loaded: boolean = $state(false)
-  let posts: Urara.Post[] = $state([])
   let tags: string[] = $state([])
   let years: number[] = $state([])
 
   storedTitle.set('')
 
-  $effect(() => {
-    const unsubPosts = storedPosts.subscribe(storedPosts => (allPosts = storedPosts.filter(post => !post.flags?.includes('unlisted'))))
-    const unsubTags = storedTags.subscribe(storedTags => (allTags = storedTags as string[]))
-    return () => {
-      unsubPosts()
-      unsubTags()
-    }
+  // Subscribe to stores synchronously (works during SSR, unlike $effect)
+  const unsubPosts = storedPosts.subscribe(storedPosts => (allPosts = storedPosts.filter(post => !post.flags?.includes('unlisted'))))
+  const unsubTags = storedTags.subscribe(storedTags => (allTags = storedTags as string[]))
+  onDestroy(() => {
+    unsubPosts()
+    unsubTags()
   })
+
+  // Derive posts from allPosts and tags (using $derived so it works during SSR, unlike $effect)
+  let posts: Urara.Post[] = $derived(tags.length === 0 ? allPosts : allPosts.filter(post => tags.every(tag => post.tags?.includes(tag))))
 
   $effect(() => {
     if (posts.length > 1)
       years = [new Date(posts[0].published ?? posts[0].created).getFullYear()]
   })
 
+  // Handle URL changes when tags change (client-side only)
   $effect(() => {
-    if (tags) {
-      posts = tags.length === 0 ? allPosts : allPosts.filter(post => tags.every(tag => post.tags?.includes(tag)))
-      if (browser && window.location.pathname === '/')
-        goto(tags.length > 0 ? `?tags=${tags.toString()}` : `/`, { replaceState: true })
-    }
+    if (tags && browser && window.location.pathname === '/')
+      goto(tags.length > 0 ? `?tags=${tags.toString()}` : `/`, { replaceState: true })
   })
 
   onMount(() => {
@@ -83,7 +82,7 @@
   <div class='flex-none w-full max-w-screen-md mx-auto xl:mx-0'>
     {#key posts}
       <!-- {:else} is not used because there is a problem with the transition -->
-      {#if loaded && posts.length === 0 && tags.length > 0}
+      {#if loaded && posts.length === 0}
         <div
           class='bg-base-300 text-base-content shadow-inner text-center md:rounded-box p-10 -mb-2 md:mb-0 relative z-10'
           in:fly={{ delay: 500, duration: 300, x: 100 }}
